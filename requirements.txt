@@ -1,0 +1,24 @@
+webpack = {
+    import/export,
+    babel,
+    SCSS,
+    Eslint,
+    two modes: {
+        Dev: {
+            dev serve,
+            eslint,
+            not modifies JS and CSS
+        }
+        Prod: {
+            minified
+        }
+};
+
+webDesign = {
+    html,
+    css
+};
+
+Implements JS components = {}
+
+
