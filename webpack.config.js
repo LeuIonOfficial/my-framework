@@ -2,8 +2,26 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const isProd = process.env.NODE_ENV === 'production'
+const isDev = !isProd
 
+const jsLoaders = () => {
+    const loaders = [
+        {
+            loader: 'babel-loader',
+            options: {
+                presets: ['@babel/preset-env']
+            }
+        }
+    ]
+
+    if (isDev) {
+        loaders.push('eslint-loader')
+    }
+
+    return loaders
+}
 
 module.exports = {
     context: path.resolve(__dirname, 'src'),
@@ -12,6 +30,25 @@ module.exports = {
     output: {
         filename: 'bundle.[hash].js',
         path: path.resolve(__dirname, 'dist'),
+    },
+    module: {
+        rules: [
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                    },
+                    'css-loader',
+                    'sass-loader'
+                ],
+            },
+            {
+                test: /\.m?js$/,
+                exclude: /node_modules/,
+                use: jsLoaders()
+            }
+        ],
     },
     resolve: {
         extensions: ['.js'],
@@ -24,10 +61,21 @@ module.exports = {
             '@core': path.resolve(__dirname, 'core')
         }
     },
+
+    devtool: isDev ? 'source-map' : false,
+    devServer: {
+        port: 3000,
+        hot: isDev,
+        static: './dist'
+    },
     plugins: [
         new HtmlWebpackPlugin(
             {
-                template: "index.html"
+                template: "index.html",
+                minify: {
+                    removeComments: isProd,
+                    collapseWhitespace: isProd,
+                }
             }),
         new CopyPlugin({
             patterns: [
@@ -36,7 +84,7 @@ module.exports = {
         }),
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
-            filename: "bundle.[hash].css"
+            filename: 'bundle.[hash].css'
         })
     ]
 };
