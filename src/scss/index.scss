@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,400;1,700&display=swap');
 @import '~normalize.css';
+@import 'header.scss';
+@import 'toolbar.scss';
+@import 'tabel.scss';
+@import 'formula.scss';
+@import 'variables';
+@import 'mixins';
+@import 'dashboard';
 
 body {
   font-family: 'Roboto', 'sans-serif';
@@ -10,4 +17,11 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.excel {
+  position: relative;
+  color: #888;
+  height: 100%;
+  width: 100%;
 }
