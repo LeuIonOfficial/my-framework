@@ -3,17 +3,17 @@ const codes = {
   Z: 90,
 };
 
-const createColumn = () => {
+const createColumn = (content) => {
   return `
-<div class="column">A</div>`;
+    <div class="column">${content}</div>`;
 };
 
 console.log(createColumn());
 
-const createRow = () => {
+const createRow = (content) => {
   return `<div class="row">
            <div class="row__info">1</div>
-           <div class="row__data"></div>
+           <div class="row__data">${content}</div>
           </div>`;
 };
 
@@ -24,11 +24,21 @@ const createCell = () => {
 
 console.log(createCell());
 
+const toChar = (_, index) => {
+  return String.fromCharCode(index + codes.A);
+};
+
+const toColumn = (element) => {
+  return `${createColumn(element)}`;
+};
+
 export const createTable = (rowsCount = 15) => {
-  const colsCount = codes.Z - codes.A;
+  const colsCount = codes.Z - codes.A + 1;
   console.log(colsCount);
   const rows = [];
-  rows.push(createRow());
+  const cols = new Array(colsCount)
+      .fill("").map(toChar).map(toColumn);
+  rows.push(createRow(cols.join("")));
   for (let i = 0; i < rowsCount; i++) {
     rows.push(createRow());
   }
