@@ -39,6 +39,14 @@ class Dom {
   off(eventType, callBack) {
     this.$el.removeEventListener(eventType, callBack);
   }
+
+  closest(selector) {
+    return $(this.$el.closest(selector));
+  }
+
+  getCords() {
+    return this.$el.getBoundingClientRect();
+  }
 }
 
 export const $ = (selector) => {

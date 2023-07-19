@@ -8,7 +8,7 @@
   left: 0;
   padding-bottom: 2px;
   border-bottom: 1px solid $gray-color;
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: auto;
 
   .row {
@@ -19,6 +19,7 @@
   }
 
   .row__info {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -34,6 +35,7 @@
   }
 
   .column {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -42,6 +44,36 @@
     min-width: 40px;
     border: 1px solid $gray-color;
     height: 100%;
+  }
+
+  .col-resize {
+    top: 0;
+    width: 4px;
+
+    &:hover {
+      cursor: col-resize;
+    }
+  }
+
+  .col-resize, .row-resize {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    background-color: $blue-border;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .row-resize {
+    left: 0;
+    height: 4px;
+
+    &:hover {
+      cursor: row-resize;
+    }
   }
 
   .cell {

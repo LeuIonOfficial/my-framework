@@ -5,14 +5,23 @@ const codes = {
 
 const createColumn = (content) => {
   return `
-    <div class="column">${content}</div>`;
+    <div class="column" datatype="resizable">${content}
+    <div class="col-resize" data-resize="col"></div>
+    </div>`;
 };
 
 console.log(createColumn());
 
-const createRow = (content) => {
+const createRow = (index, content) => {
+  const resizer = index ? "<div class=\"row-resize\" " +
+    "data-resize=\"row\"></div>" : "";
+  console.log(resizer);
+
   return `<div class="row">
-           <div class="row__info">1</div>
+           <div class="row__info">
+           ${index ? index : ""}
+           ${resizer}
+           </div>
            <div class="row__data">${content}</div>
           </div>`;
 };
@@ -32,15 +41,17 @@ const toColumn = (element) => {
   return `${createColumn(element)}`;
 };
 
-export const createTable = (rowsCount = 15) => {
+export const createTable = (rowsCount = 100) => {
   const colsCount = codes.Z - codes.A + 1;
   console.log(colsCount);
   const rows = [];
   const cols = new Array(colsCount)
-      .fill("").map(toChar).map(toColumn);
-  rows.push(createRow(cols.join("")));
+      .fill("").map(toChar).map(toColumn).join("");
+  rows.push(createRow(null, cols));
   for (let i = 0; i < rowsCount; i++) {
-    rows.push(createRow());
+    const cell = new Array(colsCount)
+        .fill("").map(createCell).join("");
+    rows.push(createRow(i+1, cell));
   }
   return rows.join("");
 };
