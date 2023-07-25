@@ -47,6 +47,15 @@ class Dom {
   getCords() {
     return this.$el.getBoundingClientRect();
   }
+
+  findAll(selector) {
+    return this.$el.querySelectorAll(selector);
+  }
+
+  // getter ar fi echivalentul la $.data
+  get data() {
+    return this.$el.dataset;
+  }
 }
 
 export const $ = (selector) => {
