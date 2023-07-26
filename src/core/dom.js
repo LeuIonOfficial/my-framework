@@ -56,6 +56,18 @@ class Dom {
   get data() {
     return this.$el.dataset;
   }
+
+  css(styles = {}) {
+    Object.keys(styles).forEach((key) => {
+      console.log(key);
+      this.$el.style[key] = styles[key];
+    });
+    // eslint-disable-next-line
+    // for (const stylesKey in styles) {
+    //   console.log(styles);
+    //   console.log(stylesKey);
+    // }
+  }
 }
 
 export const $ = (selector) => {

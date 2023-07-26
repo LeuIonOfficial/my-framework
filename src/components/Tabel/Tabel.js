@@ -18,20 +18,23 @@ export class Tabel extends ExcelComponent {
       // const parent = $resizer.$el.parentNode; nu se foloseste
       // const parent = $resizer.$el.closest(".column"); better but bullshit
       const $parent = $resizer.closest("[data-type = \"resizable\"]");
-      // eslint-disable-next-line
-      debugger;
       const cords = $parent.getCords();
+      const type = $resizer.data.resize;
+      console.log(type);
       const cells = this.$root.findAll(`[data-col="${$parent.data.col}"]`);
       document.onmousemove = (event) => {
-        console.log(event.pageX);
-        const delta = event.pageX - cords.right;
-        const value = cords.width + delta;
-        $parent.$el.style.width = `${value}px`;
-        cells.forEach((element) => {
-          element.style.width = `${value}px`;
-        });
-        console.log(value);
-        console.log("data set", $parent.data);
+        if (type === "col") {
+          const delta = event.pageX - cords.right;
+          const value = cords.width + delta;
+          $parent.css({width: `${value}px`});
+          cells.forEach((element) => {
+            element.style.width = `${value}px`;
+          });
+        } else {
+          const delta = event.pageY - cords.bottom;
+          const value = cords.height + delta;
+          $parent.css({height: value+"px"});
+        }
       };
       document.onmouseup = () => {
         document.onmousemove = null;
