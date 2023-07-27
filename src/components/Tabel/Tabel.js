@@ -15,32 +15,52 @@ export class Tabel extends ExcelComponent {
   onMousedown(event) {
     if (event.target.dataset.resize) {
       const $resizer = $(event.target);
-      // const parent = $resizer.$el.parentNode; nu se foloseste
-      // const parent = $resizer.$el.closest(".column"); better but bullshit
       const $parent = $resizer.closest("[data-type = \"resizable\"]");
       const cords = $parent.getCords();
       const type = $resizer.data.resize;
-      console.log(type);
+      const slideProp = type === "col" ? "bottom" : "right";
       const cells = this.$root.findAll(`[data-col="${$parent.data.col}"]`);
+      let value;
+
+      $resizer.css({
+        opacity: 1,
+        zIndex: 1000,
+        [slideProp]: "-2000px",
+      });
+
       document.onmousemove = (event) => {
         if (type === "col") {
           const delta = event.pageX - cords.right;
-          const value = cords.width + delta;
-          $parent.css({width: `${value}px`});
-          cells.forEach((element) => {
-            element.style.width = `${value}px`;
+          value = cords.width + delta;
+          $resizer.css({
+            right: -delta + "px",
           });
         } else {
           const delta = event.pageY - cords.bottom;
-          const value = cords.height + delta;
-          $parent.css({height: value+"px"});
+          value = cords.height + delta;
+          $resizer.css({
+            bottom: -delta + "px",
+          });
         }
       };
       document.onmouseup = () => {
+        if (type === "col") {
+          cells.forEach((element) => {
+            element.style.width = `${value}px`;
+          });
+          $parent.css({width: `${value}px`});
+        } else {
+          $parent.css({height: value + "px"});
+        }
+        $resizer.css({
+          opacity: 0,
+          bottom: 0,
+          right: 0,
+        });
+
         document.onmousemove = null;
+        document.onmouseup = null;
       };
-      console.log("start resizing", $parent);
-      console.log(cords);
     }
   }
 
